@@ -1,25 +1,19 @@
 <h1 align="center">
-📖 LangChain-Chainlit-Docker-Deployment App Template
+📖 LangChain Chainlit Docker Deployment in Google Cloud Platform
 </h1>
 
-![UI](ui.PNG?raw=true)
+![UI](image.png?raw=true)
 
+#### This repository is forked from https://github.com/amjadraza/langchain-chainlit-docker-deployment-template. Thank you `ma-raza` and `Harrison Chase`, the contributors of this repo 🙏
 
 ## 🔧 Features
 
-- Basic Skeleton App configured with `openai` API
-- A ChatBot using LangChain and Chainlit
+- Chat with CSV App configured with `openai` API
+- A QA Chatbot using LangChain and Chainlit
 - Docker Support with Optimisation Cache etc
 - Deployment on Google Cloud App Engine
-- Deployment on Google Cloud using `Cloud Run`
 
-> Reference repository: https://github.com/amjadraza/langchain-streamlit-docker-template
-
-This repo contains an `main.py` file which has a template for a chatbot implementation.
-
-## Adding your chain
-To add your chain, you need to change the `load_chain` function in `main.py`.
-Depending on the type of your chain, you may also need to change the inputs/outputs that occur later on.
+This repo contains an `main.py` file which has a code for a chatbot implementation for having conversation with CSV file.
 
 
 ## 💻 Running Locally
@@ -27,10 +21,12 @@ Depending on the type of your chain, you may also need to change the inputs/outp
 1. Clone the repository📂
 
 ```bash
-git clone https://github.com/amjadraza/langchain-chainlit-docker-deployment-template
+git clone https://github.com/sudarshan-koirala/langchain-chainlit-docker-deployment-template
 ```
 
-2. Install dependencies with [Poetry](https://python-poetry.org/) and activate virtual environment🔨
+2. Install dependencies with [Poetry](https://python-poetry.org/) and activate virtual environment🔨  
+
+To install Poetry, run the following command, `pipx install poetry`. Make sure pipx is installed in your machine.  
 
 ```bash
 poetry install
@@ -43,159 +39,129 @@ poetry shell
 chainlit run demo_app/main.py
 ```
 
-Run App using Docker
---------------------
-This project includes `Dockerfile` to run the app in Docker container. In order to optimise the Docker Image
-size and building time with cache techniques, I have follow tricks in below Article 
-https://medium.com/@albertazzir/blazing-fast-python-docker-builds-with-poetry-a78a66f5aed0
+## 🛳️ Run App using Docker
+This project includes `Dockerfile` to run the app in Docker container.
 
 Build the docker container
 
-``docker  build . -t langchain-chainlit-chat-app:latest``
+``DOCKER_BUILDKIT=1 docker build --target=runtime . -t langchain-chainlit-chat-app:latest
+``
 
-To generate Image with `DOCKER_BUILDKIT`, follow below command
-
-```DOCKER_BUILDKIT=1 docker build --target=runtime . -t langchain-chainlit-chat-app:latest```
-
-1. Run the docker container directly 
-
-``docker run -d --name langchain-chainlit-chat-app -p 8000:8000 langchain-chainlit-chat-app ``
-
-2. Run the docker container using docker-compose (Recommended)
+Run the docker container using docker-compose
 
 ``docker-compose up``
 
 
-Deploy App on Google App Engine
+🚒☁️ Deploy App on Google Cloud using Cloud Run
 --------------------------------
 This app can be deployed on Google App Engine following below steps.
 
-## Prerequisites
-
-Follow below guide on basic Instructions.
-[How to deploy Streamlit apps to Google App Engine](https://dev.to/whitphx/how-to-deploy-streamlit-apps-to-google-app-engine-407o)
-
-We added below tow configurations files 
+Two configurations files shown below are used. 
 
 1. `app.yaml`: A Configuration file for `gcloud`
 2. `.gcloudignore` : Configure the file to ignore file / folders to be uploaded
 
-I have adopted `Dockerfile` to deploy the app on GCP APP Engine.
+`Dockerfile` is used to deploy the app on GCP APP Engine.
 
-1. Initialise & Configure the App
+### Before using gcloud, you need to install gcloud cli if you haven't already
+- For me as I am in github codespace, I follow these [instructions](https://cloud.google.com/sdk/docs/install#linux), Choose the one that fits your machine.
+- Once you installed, in order to use `gcloud` instead of `./google-cloud-sdk/bin/gcloud`, you need to add it to the path.
+- For me, its zsh so, follow these steps.
+```
+1. vim ~/.zshrc
 
-``gcloud app create --project=[YOUR_PROJECT_ID]``
+# Add this line at the end of the file, replacing [PATH_TO_GCLOUD] with the absolute path to your google-cloud-sdk/bin/ directory
 
-2. Deploy the App using
+2. export PATH="$PATH:[PATH_TO_GCLOUD]/google-cloud-sdk/bin/"
 
-``gcloud app deploy``
+Save and close. To make these changes take effect, you need to source your ~/.zshrc file
 
-3. Access the App using 
+3. source ~/.zshrc
 
-https://langchain-chat-app-ex6cbrefpq-ts.a.run.app/
+```
+
+## Main steps to Deploy 🚀
+
+1. **Initialise & Configure the App**
+
+First create a project in [GCP console](https://console.cloud.google.com)
+
+```
+gcloud auth login
+gcloud auth list
+gcloud app create --project=[YOUR_PROJECT_ID]
+gcloud config set project [YOUR_PROJECT_ID]
+```
+
+Provide billing account for this project by running `gcloud beta billing accounts list` OR you can do it manually from the GCP console.
 
 
-Deploy App on Google Cloud using Cloud Run (RECOMMENDED)
---------------------------------------------------------
-This app can be deployed on Google Cloud using Cloud Run following below steps.
-
-## Prerequisites
-
-Follow below guide on basic Instructions.
-[How to deploy Streamlit apps to Google App Engine](https://dev.to/whitphx/how-to-deploy-streamlit-apps-to-google-app-engine-407o)
-
-We added below tow configurations files 
-
-1. `cloudbuild.yaml`: A Configuration file for `gcloud`
-2. `.gcloudignore` : Configure the file to ignore file / folders to be uploaded
-
-we are going to use `Dockerfile` to deploy the app using Google Cloud Run.
-
-1. Initialise & Configure the Google Project using Command Prompt
-
-`gcloud app create --project=[YOUR_PROJECT_ID]`
-
-2. Enable Services for the Project
-
+2. **Enable Services for the Project**: We have to enable services for Cloud Run using below set of commands
 ```
 gcloud services enable cloudbuild.googleapis.com
 gcloud services enable run.googleapis.com
 ```
 
-3. Create Service Account
-
+3. **Create Service Accounts with Permissions**
 ```
 gcloud iam service-accounts create langchain-app-cr \
     --display-name="langchain-app-cr"
 
-gcloud projects add-iam-policy-binding langchain-chat \
+gcloud projects add-iam-policy-binding langchain-cl-chat-with-csv \
     --member="serviceAccount:langchain-app-cr@langchain-chat.iam.gserviceaccount.com" \
     --role="roles/run.invoker"
 
-gcloud projects add-iam-policy-binding langchain-chat \
+gcloud projects add-iam-policy-binding langchain-cl-chat-with-csv \
     --member="serviceAccount:langchain-app-cr@langchain-chat.iam.gserviceaccount.com" \
     --role="roles/serviceusage.serviceUsageConsumer"
 
-gcloud projects add-iam-policy-binding langchain-chat \
+gcloud projects add-iam-policy-binding langchain-cl-chat-with-csv \
     --member="serviceAccount:langchain-app-cr@langchain-chat.iam.gserviceaccount.com" \
     --role="roles/run.admin"
-``` 
-
-4. Generate the Docker
-
-`DOCKER_BUILDKIT=1 docker build --target=runtime . -t australia-southeast1-docker.pkg.dev/langchain-chat/clapp/langchain-chainlit-chat-app:latest`
-
-5. Push Image to Google Artifact's Registry
-
-Create the repository with name `clapp`
-
 ```
+
+4. **Check the artifacts location**
+```
+gcloud artifacts locations list
+```
+5. **Generate Docker with Region**
+```
+DOCKER_BUILDKIT=1 docker build --target=runtime . -t europe-west4-docker.pkg.dev/langchain-cl-chat-with-csv/clapp/langchain-chainlit-chat-app:latest
+```
+
+6. **Push Docker to Artifacts Registry**
+```
+# Create a repository clapp
 gcloud artifacts repositories create clapp \
     --repository-format=docker \
-    --location=australia-southeast1 \
+    --location=europe-west4 \
     --description="A Langachain Chainlit App" \
     --async
+# Assign authuntication
+gcloud auth configure-docker europe-west4-docker.pkg.dev
+
+# Push the Container to Repository
+docker images
+docker push europe-west4-docker.pkg.dev/langchain-chat/clapp/langchain-chainlit-chat-app:latest
 ```
 
-Configure-docker 
-
-`gcloud auth configure-docker australia-southeast1-docker.pkg.dev`
-
-In order to push the `docker-image` to Artifact registry, first create app in the region of choice. 
-
-Check the artifacts locations
-
-`gcloud artifacts locations list`
 
 
-
-Once ready, let us push the image to location
-
-`docker push australia-southeast1-docker.pkg.dev/langchain-chat/clapp/langchain-chainlit-chat-app:latest`
-
-6. Deploy using Cloud Run
-
-Once image is pushed to Google Cloud Artifacts Registry. Let us deploy the image.
+7. **Deploy the App using Cloud Run**
 
 ```
-gcloud run deploy langchain-chat-app --image=australia-southeast1-docker.pkg.dev/langchain-chat/clapp/langchain-chainlit-chat-app:latest \
-    --region=australia-southeast1 \
-    --service-account=langchain-app-cr@langchain-chat.iam.gserviceaccount.com \
+gcloud run deploy langchain-cl-chat-with-csv-app --image=europe-west4-docker.pkg.dev/langchain-cl-chat-with-csv/clapp/langchain-chainlit-chat-app:latest \
+    --region=europe-west4 \
+    --service-account=langchain-app-cr@langchain-cl-chat-with-csv.iam.gserviceaccount.com \
     --port=8000
 ```
 
-7. Test the App Yourself
+3. **Access the App** 
+Once deployed, you can try the app using below link.
 
-You can try the app using below link 
+https://langchain-cl-chat-with-csv-app-iu7ux3rrza-ez.a.run.app/
 
-https://langchain-chat-app-ex6cbrefpq-ts.a.run.app/
-
-
-## Report Feedbacks
-
-As `langchain-chainlit-docker-deployment-template` is a template project with minimal example. Report issues if you face any. 
 
 ## DISCLAIMER
 
-This is a template App, when using with openai_api key, you will be charged a nominal fee depending
-on number of prompts etc.
+This is a template app. When using with openai_api key, you will be charged a nominal fee so be careful when using it. Cheers! Happy Coding 😎
