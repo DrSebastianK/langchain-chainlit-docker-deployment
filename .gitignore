@@ -156,5 +156,4 @@ token.json
 
 # GCP stuffs
 google-cloud-sdk/
-.chainlit/langchain.db/
 
