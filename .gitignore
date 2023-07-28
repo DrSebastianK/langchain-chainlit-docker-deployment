@@ -154,3 +154,7 @@ cython_debug/
 credentials.json
 token.json
 
+# GCP stuffs
+google-cloud-sdk/
+.chainlit/langchain.db/
+
