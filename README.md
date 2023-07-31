@@ -21,7 +21,8 @@ This repo contains an `main.py` file which has a code for a chatbot implementati
 1. Clone the repository📂
 
 ```bash
-git clone https://github.com/sudarshan-koirala/langchain-chainlit-docker-deployment-template
+git clone https://github.com/sudarshan-koirala/langchain-chainlit-docker-deployment
+cd langchain-chainlit-docker-deployment 
 ```
 
 2. Install dependencies with [Poetry](https://python-poetry.org/) and activate virtual environment🔨  
@@ -144,8 +145,6 @@ gcloud auth configure-docker europe-west4-docker.pkg.dev
 docker images
 docker push europe-west4-docker.pkg.dev/langchain-chat/clapp/langchain-chainlit-chat-app:latest
 ```
-
-
 
 7. **Deploy the App using Cloud Run**
 
