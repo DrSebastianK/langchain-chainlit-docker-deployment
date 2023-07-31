@@ -11,7 +11,7 @@
 
 - Chat with CSV App configured with `openai` API (Get API key from this [link](https://platform.openai.com/account/api-keys))
 - A QA Chatbot using LangChain and Chainlit
-- Docker Support with Optimisation Cache etc
+- Containerize the app using Docker
 - Deployment on Google Cloud App Engine
 
 This repo contains an `main.py` file which has a code for a chatbot implementation for having conversation with CSV file.
