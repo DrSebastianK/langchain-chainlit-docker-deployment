@@ -14,7 +14,7 @@
 - Containerize the app using Docker
 - Deployment on Google Cloud using [Cloud Run](https://cloud.google.com/sdk/gcloud/reference/run/deploy)
 
-This repo contains an `main.py` file which has a code for a chatbot implementation for having conversation with CSV file.
+This repo contains a `main.py` file which has a code for a chatbot implementation for having conversation with CSV file.
 
 
 ## 💻 Running Locally
