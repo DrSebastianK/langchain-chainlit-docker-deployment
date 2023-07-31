@@ -2,13 +2,14 @@
 📖 LangChain Chainlit Docker Deployment in Google Cloud Platform
 </h1>
 
+### My Youtube Channel -> [🎥 Data Science Basics](https://www.youtube.com/@datasciencebasics)
 ![UI](image.png?raw=true)
 
 #### This repository is forked from https://github.com/amjadraza/langchain-chainlit-docker-deployment-template. Thank you `ma-raza` and `Harrison Chase`, the contributors of this repo 🙏
 
 ## 🔧 Features
 
-- Chat with CSV App configured with `openai` API
+- Chat with CSV App configured with `openai` API (Get API key from this [link](https://platform.openai.com/account/api-keys))
 - A QA Chatbot using LangChain and Chainlit
 - Docker Support with Optimisation Cache etc
 - Deployment on Google Cloud App Engine
