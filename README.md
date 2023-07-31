@@ -12,7 +12,7 @@
 - Chat with CSV App configured with `openai` API (Get API key from this [link](https://platform.openai.com/account/api-keys))
 - A QA Chatbot using LangChain and Chainlit
 - Containerize the app using Docker
-- Deployment on Google Cloud App Engine
+- Deployment on Google Cloud using [Cloud Run](https://cloud.google.com/sdk/gcloud/reference/run/deploy)
 
 This repo contains an `main.py` file which has a code for a chatbot implementation for having conversation with CSV file.
 
@@ -63,7 +63,7 @@ Two configurations files shown below are used.
 1. `app.yaml`: A Configuration file for `gcloud`
 2. `.gcloudignore` : Configure the file to ignore file / folders to be uploaded
 
-`Dockerfile` is used to deploy the app on GCP APP Engine.
+`Dockerfile` is used to deploy the app on GCP.
 
 ### Before using gcloud, you need to install gcloud cli if you haven't already
 - For me as I am in github codespace, I follow these [instructions](https://cloud.google.com/sdk/docs/install#linux), Choose the one that fits your machine.
