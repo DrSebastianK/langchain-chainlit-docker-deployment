@@ -128,7 +128,7 @@ gcloud artifacts locations list
 ```
 5. **Generate Docker with Region**
 ```
-DOCKER_BUILDKIT=1 docker build --target=runtime . -t europe-west4-docker.pkg.dev/langchain-cl-chat-with-csv/clapp/langchain-chainlit-chat-app:latest
+DOCKER_BUILDKIT=1 docker build --target=runtime . -t europe-west6-docker.pkg.dev/langchain-cl-chat-with-csv/clapp/langchain-chainlit-chat-app:latest
 ```
 
 6. **Push Docker to Artifacts Registry**
@@ -136,28 +136,28 @@ DOCKER_BUILDKIT=1 docker build --target=runtime . -t europe-west4-docker.pkg.dev
 # Create a repository clapp
 gcloud artifacts repositories create clapp \
     --repository-format=docker \
-    --location=europe-west4 \
+    --location=europe-west6 \
     --description="A Langachain Chainlit App" \
     --async
 # Assign authuntication
-gcloud auth configure-docker europe-west4-docker.pkg.dev
+gcloud auth configure-docker europe-west6-docker.pkg.dev
 
 # Push the Container to Repository
 docker images
-docker push europe-west4-docker.pkg.dev/langchain-chat/clapp/langchain-chainlit-chat-app:latest
+docker push europe-west6-docker.pkg.dev/langchain-chat/clapp/langchain-chainlit-chat-app:latest
 ```
 
 7. **Deploy the App using Cloud Run**
 
 ```
-gcloud run deploy langchain-cl-chat-with-csv-app --image=europe-west4-docker.pkg.dev/langchain-cl-chat-with-csv/clapp/langchain-chainlit-chat-app:latest \
-    --region=europe-west4 \
+gcloud run deploy langchain-cl-chat-with-csv-app --image=europe-west6-docker.pkg.dev/langchain-cl-chat-with-csv/clapp/langchain-chainlit-chat-app:latest \
+    --region=europe-west6 \
     --service-account=langchain-app-cr@langchain-cl-chat-with-csv.iam.gserviceaccount.com \
     --port=8000
 ```
 
 3. **Access the App** 
-Once deployed, you can try the app using below link.
+Once deployed, you can try the app similar to follwing link. I have deleted the app for cost saving as it was just created for demonstration purpose 🙂
 
 https://langchain-cl-chat-with-csv-app-iu7ux3rrza-ez.a.run.app/
 
